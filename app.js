@@ -31,7 +31,7 @@ const db = new pg.Client({
 //	ROTAS [USUÁRIO]
 //	------------------------------------------------------------------------------------------------------------------------
 //  [ GET ] ROTA: retorna uma mensagem de teste
-app.get('/teste', urlencodedParser, async function (req, res) {
+app.get('/teste', urlencodedParser, async (req, res) => {
     try{
         await db.connect();
         let result = await db.query("SELECT * FROM abb;");
@@ -40,3 +40,4 @@ app.get('/teste', urlencodedParser, async function (req, res) {
         res.json({error: e});
     }
 });
+
