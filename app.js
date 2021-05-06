@@ -39,10 +39,10 @@ const db = new pg.Client({
 //	ROTAS [USUÁRIO]
 //	------------------------------------------------------------------------------------------------------------------------
 //  [ GET ] ROTA: retorna uma mensagem de teste
-app.get('/teste', urlencodedParser, async (req, res) => {
+app.get('/login', urlencodedParser, async (req, res) => {
     try{
         await db.connect();
-        let result = await db.query("SELECT * FROM abb;");
+        let result = await db.query("SELECT * FROM cliente WHERE email = $1 AND senha = $2;", [req.query.email, req.query.senha]);
         return res.json(
             {
                 result: result.rows,
@@ -59,5 +59,27 @@ app.get('/teste', urlencodedParser, async (req, res) => {
             }
         );
     }
+});
+
+app.get('/cadastro', urlencodedParser, async (req, res) => {
+    // try{
+    //     await db.connect();
+    //     let result = await db.query("SELECT * FROM cliente WHERE email = $1 AND senha = $2;", [req.query.email, req.query.senha]);
+    //     return res.json(
+    //         {
+    //             result: result.rows,
+    //             success: true,
+    //             stack_trace: ""
+    //         }
+    //     );
+    // }catch(e){
+    //     return res.json(
+    //         {
+    //             result: [],
+    //             success: false,
+    //             stack_trace: JSON.stringify(e)
+    //         }
+    //     );
+    // }
 });
 
