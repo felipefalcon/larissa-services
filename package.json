@@ -1,0 +1,24 @@
+{
+  "name": "larissa-services",
+  "version": "1.0.0",
+  "description": "Serviços para serem usados no projeto de WEB da Larissa",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/felipefalcon/larissa-services.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/felipefalcon/larissa-services/issues"
+  },
+  "homepage": "https://github.com/felipefalcon/larissa-services#readme",
+  "dependencies": {
+    "compression": "^1.7.4",
+    "express": "^4.17.1",
+    "pg": "^8.6.0"
+  }
+}
