@@ -25,6 +25,14 @@ const db = new pg.Client({
     ssl: { rejectUnauthorized: false }
 });
 
+
+// Formato de retorno
+// {
+//     result: [],
+//     success: true || false,
+//     stack_trace: ""
+// }
+
 //  ------------------------------------------------------------------------------------------------------------------------
 //	ROTAS
 //	------------------------------------------------------------------------------------------------------------------------
@@ -35,9 +43,21 @@ app.get('/teste', urlencodedParser, async (req, res) => {
     try{
         await db.connect();
         let result = await db.query("SELECT * FROM abb;");
-        return res.json({result: result.rows});
+        return res.json(
+            {
+                result: result.rows,
+                success: true,
+                stack_trace: ""
+            }
+        );
     }catch(e){
-        res.json({error: e});
+        return res.json(
+            {
+                result: [],
+                success: false,
+                stack_trace: JSON.stringify(e)
+            }
+        );
     }
 });
 
