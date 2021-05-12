@@ -56,25 +56,78 @@ app.get('/login', urlencodedParser, async (req, res) => {
     }
 });
 
-app.get('/cadastro', urlencodedParser, async (req, res) => {
-    // try{
-    //     await db.connect();
-    //     let result = await db.query("SELECT * FROM cliente WHERE email = $1 AND senha = $2;", [req.query.email, req.query.senha]);
-    //     return res.json(
-    //         {
-    //             result: result.rows,
-    //             success: true,
-    //             stack_trace: ""
-    //         }
-    //     );
-    // }catch(e){
-    //     return res.json(
-    //         {
-    //             result: [],
-    //             success: false,
-    //             stack_trace: JSON.stringify(e)
-    //         }
-    //     );
-    // }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//  ------------------------------------------------------------------------------------------------------------------------
+//	CONFIGURAÇÃO DO MÓDULO NODEMAILER
+//	------------------------------------------------------------------------------------------------------------------------
+const nodemailer = require('nodemailer');
+
+app.get('/esqueci-senha', urlencodedParser, async (req, res) => {
+    let email = req.query.email;
+    let user = {};
+
+    try{
+        const db = await dbClient();
+        await db.connect();
+        let result = await db.query("SELECT * FROM cliente WHERE email = $1;", [req.query.email]);
+        user = result.rows[0];
+        let transporter = nodemailer.createTransport({
+            host: 'smtp-mail.outlook.com',
+            secureConnection: false, // TLS requires secureConnection to be false
+            port: 587, // port for secure SMTP
+            tls: {
+                ciphers:'SSLv3'
+            },
+            auth: {
+                user: 'projeto-tcc-2020@outlook.com',
+                pass: 'Projeto2020'
+            }
+        });
+        let mailOptions = {
+            from: '"projeto-tcc-2020@outlook.com', // sender address
+            to: email, // list of receivers
+            subject: 'Recuperação senha - Projeto WEB', // Subject line
+            html: "Você parece ter se esquecido sua senha, a senha para acessar o projeto de WEB é: <br> <b>" + user.senha + "</b>"
+        };
+        // send mail with defined transport object
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                return console.log(error);
+            }
+        });
+    
+        return res.json(
+            {
+                result: "Senha enviada com sucesso para o email",
+                success: true,
+                stack_trace: ""
+            }
+        );
+    }catch(e){
+        return res.json(
+            {
+                result: "Houve um erro ao tentar conectar ao banco de dados",
+                success: false,
+                stack_trace: JSON.stringify(e)
+            }
+        );
+    }
 });
+
 
