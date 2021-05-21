@@ -53,7 +53,142 @@ app.get('/login', urlencodedParser, async (req, res) => {
                 stack_trace: JSON.stringify(e)
             }
         );
-    }
+    }   
+});
+
+//	------------------------------------------------------------------------------------------------------------------------
+//	ROTAS [PRODUTOS VITRINE]
+//	------------------------------------------------------------------------------------------------------------------------
+//  [ GET ] ROTA: retorna todos os produtos
+app.get('/vitrine', urlencodedParser, async (req, res) => {
+    try{
+        const db = await dbClient();
+        await db.connect();
+        let result = await db.query("SELECT * FROM produto");
+        return res.json(
+            {
+                result: result.rows,
+                success: true,
+                stack_trace: ""
+            }
+        );
+    }catch(e){
+        return res.json(
+            {
+                result: [],
+                success: false,
+                stack_trace: JSON.stringify(e)
+            }
+        );
+    }   
+});
+
+//	------------------------------------------------------------------------------------------------------------------------
+//	ROTAS [GENERO DO PERFUME]
+//	------------------------------------------------------------------------------------------------------------------------
+//  [ GET ] ROTA: retorna um perfume pelo genero cadastrado no banco.
+app.get('/generoperfume', urlencodedParser, async (req, res) => {
+    try{
+        const db = await dbClient();
+        await db.connect();
+        let result = await db.query("select * from produto where UPPER(categoria) = UPPER($1);", [req.query.categoria]);
+        return res.json(
+            {
+                result: result.rows,
+                success: true,
+                stack_trace: ""
+            }
+        );
+    }catch(e){
+        return res.json(
+            {
+                result: [],
+                success: false,
+                stack_trace: JSON.stringify(e)
+            }
+        );
+    }   
+});
+
+//	------------------------------------------------------------------------------------------------------------------------
+//	ROTAS [BUSCA PELO BOTÃO]
+//	------------------------------------------------------------------------------------------------------------------------
+//  [ GET ] ROTA: BUSCA PELO BOTÃO DA LUPA.
+app.get('/buscaresultado', urlencodedParser, async (req, res) => {
+    try{
+        const db = await dbClient();
+        await db.connect();
+        let result = await db.query("select * from produto where titulo ilike $1;", ["%" + req.query.busca + "%"]);
+        return res.json(
+            {
+                result: result.rows,
+                success: true,
+                stack_trace: ""
+            }
+        );
+    }catch(e){
+        return res.json(
+            {
+                result: [],
+                success: false,
+                stack_trace: JSON.stringify(e)
+            }
+        );
+    }   
+});
+
+//	------------------------------------------------------------------------------------------------------------------------
+//	ROTAS [CADASTRAR]
+//	------------------------------------------------------------------------------------------------------------------------
+//  [ GET ] ROTA: cadastra usuário no banco
+app.get('/cadastro', urlencodedParser, async (req, res) => {
+    try{
+        const db = await dbClient();
+        await db.connect();
+        await db.query("insert into cliente (nome, email, senha, documento, telefone) values ($1, $2, $3, $4, $5);", [req.query.nome, req.query.email, req.query.senha, req.query.documento, req.query.telefone]);
+        return res.json(
+            {
+                result: "Cadastrado com sucesso",
+                success: true,
+                stack_trace: ""
+            }
+        );
+    }catch(e){
+        return res.json(
+            {
+                result: [],
+                success: false,
+                stack_trace: JSON.stringify(e)
+            }
+        );
+    }   
+});
+
+//	------------------------------------------------------------------------------------------------------------------------
+//	ROTAS [DETALHES DO PRODUTO]
+//	------------------------------------------------------------------------------------------------------------------------
+//  [ GET ] ROTA: retorna um perfume pelo genero cadastrado no banco.
+app.get('/detalheproduto', urlencodedParser, async (req, res) => {
+    try{
+        const db = await dbClient();
+        await db.connect();
+        let result = await db.query("select * from produto where codigo = $1;", [req.query.codigo]);
+        return res.json(
+            {
+                result: result.rows,
+                success: true,
+                stack_trace: ""
+            }
+        );
+    }catch(e){
+        return res.json(
+            {
+                result: [],
+                success: false,
+                stack_trace: JSON.stringify(e)
+            }
+        );
+    }   
 });
 
 
