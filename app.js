@@ -191,6 +191,65 @@ app.get('/detalheproduto', urlencodedParser, async (req, res) => {
     }   
 });
 
+//	------------------------------------------------------------------------------------------------------------------------
+//	ROTAS [INSERIR NO CARRINHO]
+//	------------------------------------------------------------------------------------------------------------------------
+//  [ GET ] ROTA: insere item no carrinho e ja calcula o valor total
+app.get('/inserecarrinho', urlencodedParser, async (req, res) => {
+    try{
+        const db = await dbClient();
+        await db.connect();
+        let result = await db.query("select valor from produto where codigo = $1;", [req.query.codproduto]);
+        let multiplicacao = result.rows[0].valor*req.query.quantidade;
+        await db.query("insert into cesta (sessionid, codigoproduto, quantidade, valorunitario, valortotal) values ($1, $2, $3, (select valor from produto where codigo = $2), $4);", [req.query.sessionid, req.query.codproduto, req.query.quantidade, multiplicacao]);
+        //await db.query("insert into cesta (sessionid, codigoproduto, quantidade, valorunitario, valortotal) select $1, codigo, $3, valor , valor*$3 from produto where codigo = $2;", [req.query.sessionid, req.query.codproduto, req.query.quantidade]);
+        return res.json(
+            {
+                result: "Adicionado no carrinho com sucesso",
+                success: true,
+                stack_trace: ""
+            }
+        );
+    }catch(e){
+        return res.json(
+            {
+                result: [],
+                success: false,
+                stack_trace: JSON.stringify(e)
+            }
+        );
+    }   
+});
+
+//	------------------------------------------------------------------------------------------------------------------------
+//	ROTAS [DETALHES DO PRODUTO]
+//	------------------------------------------------------------------------------------------------------------------------
+//  [ GET ] ROTA: retorna um perfume pelo genero cadastrado no banco.
+app.get('/carrinhofinal', urlencodedParser, async (req, res) => {
+    try{
+        const db = await dbClient();
+        await db.connect();
+        let result = await db.query(`select codigoproduto, valorunitario, titulo, sum(quantidade) as qtd_total, sum(valortotal) as sum_total from cesta 
+        inner join produto on cesta.codigoproduto = produto.codigo 
+        where sessionid = $1
+        group by codigoproduto, valorunitario, titulo;`, [req.query.usuario]);
+        return res.json(
+            {
+                result: result.rows,
+                success: true,
+                stack_trace: ""
+            }
+        );
+    }catch(e){
+        return res.json(
+            {
+                result: [],
+                success: false,
+                stack_trace: JSON.stringify(e)
+            }
+        );
+    }   
+});
 
 
 
