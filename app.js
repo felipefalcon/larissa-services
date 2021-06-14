@@ -300,14 +300,11 @@ app.get('/limparcesta', urlencodedParser, async (req, res) => {
 const nodemailer = require('nodemailer');
 
 app.get('/esqueci-senha', urlencodedParser, async (req, res) => {
-    let email = req.query.email;
-    let user = {};
-
     try{
         const db = await dbClient();
         await db.connect();
         let result = await db.query("SELECT * FROM cliente WHERE email = $1;", [req.query.email]);
-        user = result.rows[0];
+        let user = result.rows[0];
         let transporter = nodemailer.createTransport({
             host: 'smtp-mail.outlook.com',
             secureConnection: false, // TLS requires secureConnection to be false
@@ -319,12 +316,12 @@ app.get('/esqueci-senha', urlencodedParser, async (req, res) => {
                 user: 'projeto-tcc-2020@outlook.com',
                 pass: 'Projeto2020'
             }
-        });
-        let mailOptions = {
+    });
+    let mailOptions = {
             from: '"projeto-tcc-2020@outlook.com', // sender address
-            to: email, // list of receivers
-            subject: 'Recuperação senha - Projeto WEB', // Subject line
-            html: "Você parece ter se esquecido sua senha, a senha para acessar o projeto de WEB é: <br> <b>" + user.senha + "</b>"
+            to: user.email, // list of receivers
+            subject: 'Recuperação de Senha', // Subject line
+            html: "Você solicitou a recuperação da sua senha no Projeto WEB <br> Sua senha é: " + user.senha
         };
         // send mail with defined transport object
         transporter.sendMail(mailOptions, (error, info) => {
@@ -332,10 +329,9 @@ app.get('/esqueci-senha', urlencodedParser, async (req, res) => {
                 return console.log(error);
             }
         });
-    
         return res.json(
             {
-                result: "Senha enviada com sucesso para o email",
+                result: "A Senha será enviada para o email informado",
                 success: true,
                 stack_trace: ""
             }
@@ -343,7 +339,7 @@ app.get('/esqueci-senha', urlencodedParser, async (req, res) => {
     }catch(e){
         return res.json(
             {
-                result: "Houve um erro ao tentar conectar ao banco de dados",
+                result: "Houve um erro ao tentar conectar ao banco de dados ou enviar o email",
                 success: false,
                 stack_trace: JSON.stringify(e)
             }
