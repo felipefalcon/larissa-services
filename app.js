@@ -7,6 +7,7 @@ var app = express();
 var bodyParser = require('body-parser');
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
 app.use(compression());
+app.use(express.static(__dirname + '/public'));
 var port = process.env.PORT || 8080;
 app.listen(port, '0.0.0.0', function () {
     console.log("Servidor ativo em: http://localhost:" + port);
@@ -222,7 +223,7 @@ app.get('/inserecarrinho', urlencodedParser, async (req, res) => {
 });
 
 //	------------------------------------------------------------------------------------------------------------------------
-//	ROTAS [DETALHES DO PRODUTO]
+//	ROTAS [CARRINHO FINAL]
 //	------------------------------------------------------------------------------------------------------------------------
 //  [ GET ] ROTA: retorna um perfume pelo genero cadastrado no banco.
 app.get('/carrinhofinal', urlencodedParser, async (req, res) => {
@@ -251,6 +252,32 @@ app.get('/carrinhofinal', urlencodedParser, async (req, res) => {
     }   
 });
 
+//	------------------------------------------------------------------------------------------------------------------------
+//	ROTAS [LIMPAR CESTA]
+//	------------------------------------------------------------------------------------------------------------------------
+//  [ GET ] ROTA: cadastra usuário no banco
+app.get('/limparcesta', urlencodedParser, async (req, res) => {
+    try{
+        const db = await dbClient();
+        await db.connect();
+        await db.query("delete from cesta where sessionid = $1;", [req.query.sessionid]);
+        return res.json(
+            {
+                result: "Carrinho esvaziado",
+                success: true,
+                stack_trace: ""
+            }
+        );
+    }catch(e){
+        return res.json(
+            {
+                result: [],
+                success: false,
+                stack_trace: JSON.stringify(e)
+            }
+        );
+    }   
+});
 
 
 
