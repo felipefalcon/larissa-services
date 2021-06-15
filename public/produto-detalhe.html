@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Detalhe - Produto</title>
+ 
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/estilo.css"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    </head>
+    <body>
+        <div class="container">
+            <nav class="nav navbar navbar-light bg-light">
+                <a class="navbar-brand" href="vitrine.html">
+                    <img src="images/logo2.png" id="imglogotopo" width="80">
+                </a>
+                <ul class="nav navbar ">
+                    <li class="navbar-item">
+                        <a href="login.html">Login |</a>
+                    </li>
+                    <li class="navbar-item" id="botaosair">
+                        <a href="login.html" onclick="logout()"> Sair |</a>
+                    </li>                       
+                    <li class="navbar-item">
+                        <button class="btn btn-light" type="button" >
+                            <a href=" carrinho.html">
+                                <img src="images/24px.svg" id="imgcarrinho" width="30">
+                            </a>
+                        </button>
+                    </li>
+                </ul>
+            </nav>
+            <nav class="navbar navbar-expand-lg navbar-light">
+                <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#navbarSite">
+                    <span class="navbar-toggler-icon "></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSite">
+                    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                        <li class="navbar-item">
+                            <a class="nav-link" href="vitrine.html">Home</a>
+                        </li>
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                                Produtos
+                            </a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="vitrine.html">Perfume feminino</a>
+                                <a class="dropdown-item" href="vitrine.html">Perfume masculino</a>								
+                            </div>
+                        </li>
+                    <!--    <li class="nav-item">
+                            <a class="nav-link" href="#">Contato</a>
+                        </li> -->
+                    </ul>
+                    <div class="col-lg-4 col-md-3 col-sm-3 col-12">
+                        <div class="float-right">
+                            <form class="form-inline" action="">
+                                <div>
+                                    <input class="form-control" type="search" placeholder="Procurar..." name="search" id="mySearch" required>
+                                </div>
+                                <div>
+                                    <button type="submit" class="btn btn-dark" onclick="doSearch()"><i class="fa fa-search"></i></button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+            <section id="product_details">
+                    <div class="container">
+                        <div class="row details_row">
+
+                            <div class="col-lg-6">
+                                <div class="details_image">
+                                    <div class="details_image_large">
+                                        <img id="imgid" src="" width="350">    
+                                    </div>                                    
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="details_content">
+                                    <div class="details_name" id="product_name"></div>
+                                    <div class="details_price"></div>
+                                    <div class="in_stock_container">
+                                        <div class="availability">Disponibilidade:</div>
+                                        Em Estoque
+                                    </div>
+                                    <div class="details_text"> <p id="paragrafo"></p>
+                                    </div>
+                                    <div class="product_quantity_container">
+                                        <div class="product_quantity clearfix">
+                                            <div class="form-group form-inline">
+                                              <label for="quantity_input">Quantidade: &nbsp </label>
+                                              <input type="number" class="form-control" id="quantity_input" value="1" size="10">
+                                            </div>
+                                        </div>
+                                        <a class="d-inline btn btn-light btn-outline-dark btn-sm" onclick="adicionacarrinho();" role="button">Comprar</a>
+                                    </div>                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>                
+            </section>            
+        </div>
+        <div class="container">
+            <footer>
+                <section class="footer footer_1its py-5">
+                    <div class="container py-md-4">
+                        <div class="row footer-top mb-md-5 mb-4"></div>
+                    </div>
+                </section>
+            </footer>
+        </div>         
+    </body>
+</html>
+
+<script language="javascript">
+
+    var loginvar= JSON.parse(window.localStorage.getItem('loginvar'));
+    
+    if (loginvar == undefined) {
+        $("#botaosair").hide(); 
+    }
+    
+const urlParams = new URLSearchParams(location.search);
+carregarproduto(urlParams.get('codigo'));
+//console.log(urlParams.get('codigo')); // 1
+
+function carregarproduto(codigo) {
+        $.get("http://localhost:8080/detalheproduto", {codigo: codigo})
+        .done(function( data ) {
+            var produto = data.result[0];
+            $('#product_name').html(produto.titulo);
+            $('.details_price').html('R$ '+produto.valor.replace('.', ',')); 
+            $('#paragrafo').html(produto.descritivo);
+            $('#imgid').attr('src', produto.urlimg);
+            //console.log(produto);
+
+    } ); 
+
+} 
+function adicionacarrinho() {
+        $.get("http://localhost:8080/inserecarrinho", {sessionid: loginvar.codigo, codproduto: urlParams.get('codigo'), quantidade: $("#quantity_input").val()})
+            .done(function( data ) {
+            setTimeout(function(){
+                window.location.replace("./carrinho.html");
+		        }, 2000);
+            alert(data.result);
+
+        });
+    } 
+
+function logout() {
+        //window.localStorage.setItem('loginvar', JSON.stringify(data.result[0]));
+        window.localStorage.removeItem('loginvar');
+    }    
+
+</script>

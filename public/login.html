@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Login</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="css/estilo.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <nav class="nav navbar navbar-light bg-light">
+            <a class="navbar-brand" href="vitrine.html">
+                <img src="images/logo2.png" id="imglogotopo" width="80">
+            </a>
+            <ul class="nav navbar ">
+                <li class="navbar-item">
+                    <a href="login.html">Login |</a>
+                </li>
+                <li class="navbar-item">
+                    <button class="btn btn-light" type="button">
+                        <a href=" carrinho.html">
+                            <img src="images/24px.svg" id="imgcarrinho" width="30">
+                        </a>
+                    </button>
+                </li>
+            </ul>
+        </nav>
+        <nav class="navbar navbar-expand-lg navbar-light">
+
+            <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#navbarSite">
+                <span class="navbar-toggler-icon "></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSite">
+                <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                        <li class="navbar-item">
+                            <a class="nav-link" href="vitrine.html">Home</a>
+                        </li>
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                                Produtos
+                            </a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="vitrine.html">Perfume feminino</a>
+                                <a class="dropdown-item" href="vitrine.html">Perfume masculino</a>
+                            </div>
+                        </li>
+                    <!--    <li class="nav-item">
+                            <a class="nav-link" href="#">Contato</a>
+                        </li> -->
+                    </ul>
+                    <div class="col-lg-4 col-md-3 col-sm-3 col-12">
+                        <div class="float-right">
+                            <form class="form-inline" action="">
+                            <!--    <div>
+                                    <input class="form-control" type="search" placeholder="Procurar..." name="search" id="mySearch" required>
+                                </div>
+                                <div>
+                                    <button type="submit" class="btn btn-dark" onclick="doSearch()"><i class="fa fa-search"></i></button>
+                                </div> -->
+                            </form>
+                        </div>
+                    </div>
+            </div>
+        </nav>
+
+        <div class="container">
+            <div class="row d-flex justify-content-center bg-light">
+                <aside class="col-sm-6 mt-4 mb-4">
+                    <div class="card">
+                        <article class="card-body">
+                            <h5>Fazer Login</h5>
+                            <form>
+                                <div class="form-group">
+                                    <label>Seu email</label>
+                                    <input name="" class="form-control" placeholder="Email" type="email" id="email">
+                                </div>
+                                <div class="form-group">
+									
+                                    <label>Sua senha</label>
+                                    <input class="form-control" placeholder="******" type="password" id="senha">
+                                </div>
+                                <div class="form-group">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox"> Salvar senha </label><br/>
+                                    </div>
+                                    <a class="" href="esqueci.html"> Esqueceu sua senha? </a>                                    
+                                </div>
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-outline-dark btn-block" onclick="validar();"> Entrar </button>
+									<a href="cadastro.html" class="btn btn-dark btn-block">Não tenho cadastro</a>
+                                </div>                                
+                            </form>
+                        </article>
+                    </div>
+                </aside>
+            </div>
+        </div>
+        <div class="container">
+            <footer>
+                <section class="footer footer_1its py-5">
+                    <div class="container py-md-4">
+                        <div class="row footer-top mb-md-5 mb-4"></div>
+                    </div>
+                </section>
+            </footer>
+        </div>          
+    </div>
+    <script src="./js/jquery.min.js"></script>
+</body>
+
+</html>
+
+<script language="javascript">
+
+    var loginvar= JSON.parse(window.localStorage.getItem('loginvar'));
+
+    if (loginvar != undefined) {
+        window.location.href = "./vitrine.html";
+
+    }
+    
+    function validar() {
+        if (email.value.length < 6 || 
+            email.value.indexOf("@") < 1 || 
+            email.value.lastIndexOf(".") <= email.value.indexOf("@") ||
+            email.value.lastIndexOf(".") == (email.value.length - 1)
+        ) {
+            alert("Informe um email válido");
+            email.focus(); 
+            return false;
+        }
+        
+        if (senha.value.length < 6) {
+            alert("Informe uma senha com no mínimo 6 dígitos !");
+            senha.focus(); 
+            return false;
+        }
+
+        $.get("http://localhost:8080/login", {email: email.value, senha: senha.value})
+        .done(function( data ) {
+            console.log(data);
+            if (data.result.length == 1) {
+                setTimeout(function(){
+                    window.location.replace("./vitrine.html");
+		        }, 2000);
+
+            alert("Login efetuado com sucesso !!!");
+                window.location.replace("./vitrine.html");              
+                window.localStorage.setItem('loginvar', JSON.stringify(data.result[0]));
+                
+            } else  
+                alert("Usuário não encontrado");
+        
+        });
+
+    }
+</script>

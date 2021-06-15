@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Carrinho</title>
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/estilo.css"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    </head>
+
+    <body>
+        <div class="container">
+            <nav class="nav navbar navbar-light bg-light">
+                <a class="navbar-brand" href="vitrine.html">
+
+                    <img src="images/logo2.png" id="imglogotopo" width="80">
+                </a>
+                <ul class="nav navbar ">
+                    <li class="navbar-item">
+                        <a href="login.html">Login |</a>
+                    </li>
+                    <li class="navbar-item" id="botaosair">
+                        <a href="login.html" onclick="logout()"> Sair |</a>
+                    </li>                       
+                    <li class="navbar-item">
+                        <button class="btn btn-light" type="button" >
+                            <img src="images/24px.svg" alt="carrinho" id="imgcarrinho" width="30">
+                        </button>
+                    </li>
+                </ul>
+            </nav>
+            <nav class="navbar navbar-expand-lg navbar-light">
+
+                <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#navbarSite">
+                    <span class="navbar-toggler-icon "></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSite">
+                    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                        <li class="navbar-item">
+                            <a class="nav-link" href="vitrine.html">Home</a>
+                        </li>
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                                Produtos
+                            </a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="vitrine.html">Perfume feminino</a>
+                                <a class="dropdown-item" href="vitrine.html">Perfume masculino</a>
+                            </div>
+                        </li>
+                    <!--    <li class="nav-item">
+                            <a class="nav-link" href="#">Contato</a>
+                        </li> -->
+                    </ul>
+                    <div class="col-lg-4 col-md-3 col-sm-3 col-12">
+                        <div class="float-right">
+                            <form class="form-inline" action="">
+                             <!--   <div>
+                                    <input class="form-control" type="search" placeholder="Procurar..." name="search" id="mySearch" required>
+                                </div>
+                                <div>
+                                    <button type="submit" class="btn btn-dark" onclick="doSearch()"><i class="fa fa-search"></i></button>
+                                </div> -->
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+            <div class="minhas-compras mt-4">
+                <h1> &nbsp Meu Carrinho</h1>
+            </div>
+            <div class="cart">
+                <table class="table cart-item">
+                    <thead>
+                        <tr class="titulo-tabela">
+                            <th class="produto">Produto</th>   
+                            <th class="preco-item">Preço</th>
+                            <th class="quantidade-item">Qtde</th>
+                            <th class="valor-total">Valor</th>
+                        </tr>
+                    </thead>
+                        <tbody id="tabeladatela">
+                        </tbody>
+                        <!-- <tbody>
+                            <td class="produto ">Boné Asics Aba Curva Mad Mash - Preto</td>
+                            <td class="preco-item">R$ 49,90</td>
+                            <td class="quantidade-item">2</td>
+                            <td class="valor-total">R$ 99,80</td>
+                        </tbody> -->
+                </table>
+            </div>
+            <div class="d-flex flex-row bd-highlight mb-3">
+                <div class="cart resume col-md-4">
+                    <table>                        
+                        <tbody>
+                            <td class="subtotal py-2">Total</td>
+                            <td id="valortotal" class="subtotal "></td>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="text-center py-2">
+                    <div class="form-group ml-4 mt-2">
+                        <button type="button" class="btn btn-dark" onclick="limparCarrinho('Carrinho esvaziado')"> Limpar carrinho </button>
+                    </div>
+                    <div class="form-group ml-4 mt-2">
+                        <button type="submit" class="btn btn-dark" onclick="limparCarrinho('Compra realizada com sucesso')"> Finalizar Compras </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <footer>
+                <section class="footer footer_1its py-5">
+                    <div class="container py-md-4">
+                        <div class="row footer-top mb-md-5 mb-4"></div>
+                    </div>
+                </section>
+            </footer>
+        </div>      
+    </body>
+</html>
+
+<script language="javascript">
+
+
+var loginvar= JSON.parse(window.localStorage.getItem('loginvar'));
+
+mostraCarrinho();
+    
+    if (loginvar == undefined) {
+        $("#botaosair").hide(); 
+    }
+
+function mostraCarrinho() { 
+        $.get("http://localhost:8080/carrinhofinal", {usuario: loginvar.codigo})
+        .done(function( data ) {
+
+            $("#tabeladatela").empty();
+
+            let soma=0;
+            for (var i=0; i < data.result.length; i++) {
+                var prodcarrinho = data.result[i];
+                $("#tabeladatela").append(`<tr><td class="produto ">${prodcarrinho.titulo}</td>
+                            <td class="preco-item">R$ ${prodcarrinho.valorunitario.replace(".", ",")}</td>
+                            <td class="quantidade-item">${prodcarrinho.qtd_total}</td>
+                            <td class="valor-total ">R$ ${Number(prodcarrinho.sum_total).toFixed(2).replace(".", ",")}</td></tr>`)
+                            soma+=Number(prodcarrinho.sum_total) 
+                        } console.log(soma); 
+               // $("#valortotal").html("R$ " + soma)
+                $("#valortotal").html("R$" + Number(soma).toFixed(2).replace(".",",") );
+        });
+    }   
+
+    function limparCarrinho(mensagem) { 
+        $.get("http://localhost:8080/limparcesta", {sessionid: loginvar.codigo})
+        .done(function( data ) {
+
+                $("#tabeladatela").empty();            
+                $("#valortotal").html("R$ " + 0)
+                alert(mensagem);
+        });
+    }   
+
+    function logout() {
+        //window.localStorage.setItem('loginvar', JSON.stringify(data.result[0]));
+        window.localStorage.removeItem('loginvar');
+    }    
+
+</script>

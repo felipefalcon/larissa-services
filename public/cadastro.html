@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Cadastro</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/estilo.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <nav class="nav navbar navbar-light bg-light">
+            <a class="navbar-brand" href="vitrine.html">
+
+                <img src="images/logo2.png" id="imglogotopo" width="80">
+            </a>
+            <ul class="nav navbar ">
+                <li class="navbar-item">
+                    <a href="login.html">Login |</a>
+                </li>
+                <li class="navbar-item">
+                    <button class="btn btn-light" type="button">
+                        <a href=" carrinho.html">
+                            <img src="images/24px.svg" id="imgcarrinho" width="30">
+                        </a>
+                    </button>
+                </li>
+            </ul>
+        </nav>
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#navbarSite">
+                <span class="navbar-toggler-icon "></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSite">
+                <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                        <li class="navbar-item">
+                            <a class="nav-link" href="vitrine.html">Home</a>
+                        </li>
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                                Produtos
+                            </a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="vitrine.html">Perfume feminino</a>
+                                <a class="dropdown-item" href="vitrine.html">Perfume masculino</a>
+                            </div>
+                        </li>
+                    <!--    <li class="nav-item">
+                            <a class="nav-link" href="#">Contato</a>
+                        </li> -->
+                    </ul>  
+                    <div class="col-lg-4 col-md-3 col-sm-3 col-12">
+                        <div class="float-right">
+                            <form class="form-inline" action="">
+                                <div>
+                                    <input class="form-control" type="search" placeholder="Procurar..." name="search" id="mySearch" required>
+                                </div>
+                                <div>
+                                    <button type="submit" class="btn btn-dark" onclick="doSearch()"><i class="fa fa-search"></i></button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>                  
+            </div>
+        </nav>
+
+        <div class="container">
+            <div class="row d-flex justify-content-center bg-light">
+                <aside class="col-sm-8 mt-4 mb-4">
+                
+                <div class="card">
+                    <article class="card-body">
+                        <div>
+                            <div class="form-row">
+                                <h5>Cadastro</h5>
+                                <div class="col-md-12 mb-3">
+                                    <label for="nome">Nome Completo</label>
+                                    <input type="text" class="form-control" id="nome" placeholder="Nome" value="" >
+                                </div>
+                                <div class="col-md-12 mb-3">
+                                    <label for="usuario">Email</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="inputGroupPrepend2">@</span>
+                                        </div>
+                                        <input name="" class="form-control" placeholder="soft@wave.com" type="email" id="usuario">
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="senha1">Senha</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="inputGroupPrepend2">#</span>
+                                        </div>
+                                        <input type="password" class="form-control" id="senha1" placeholder="******" aria-describedby="inputGroupPrepend2" >
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="senha2">Confirmação</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="inputGroupPrepend2">#</span>
+                                        </div>
+                                        <input type="password" class="form-control" id="senha2" placeholder="******" aria-describedby="inputGroupPrepend2" >
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="cpf">CPF</label>
+                                    <input type="text" class="form-control" id="cpf" placeholder="12345678901" value="" >
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="telefone">Telefone</label>
+                                    <input type="text" class="form-control" id="telefone" placeholder="11123456789" value="" >
+                                </div>
+                            </div>
+                            <button class="btn btn-outline-dark" onclick="validar2();">Enviar</button>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <footer>
+                <section class="footer footer_1its py-5">
+                    <div class="container py-md-4">
+                        <div class="row footer-top mb-md-5 mb-4"></div>
+                    </div>
+                </section>
+            </footer>
+        </div>  
+    </div> 
+</body>
+
+</html>
+
+<script language="javascript">
+
+    function validar2() {
+
+        if (nome.value.length < 3 || isNaN(nome.value) == false) { 
+            alert("Informe o nome completo !");
+            nome.focus(); 
+            return false;
+        }
+        if (usuario.value.length < 6 ||  
+            usuario.value.indexOf("@") < 1 || 
+            usuario.value.lastIndexOf(".") <= usuario.value.indexOf("@") ||
+            usuario.value.lastIndexOf(".") == (usuario.value.length - 1)
+        ) {
+            alert("Informe um email válido");
+            usuario.focus(); 
+            return false;
+        }
+        if (senha1.value.length < 6) {
+            alert("Informe uma senha com no mínimo 6 digitos !");
+            senha1.focus(); 
+            return false;
+        }
+        if (senha1.value != senha2.value) {
+            alert("Senha e confirmação estão diferentes");
+            senha2.focus(); 
+            return false;
+        }
+        if (cpf.value.length < 11  || isNaN(cpf.value)) {
+            alert("Informe um CPF válido (11 algarismos, sem ponto e hifen)");
+            cpf.focus();
+            return false;
+        }
+        if (telefone.value.length < 10 || isNaN(telefone.value)) {
+            alert("Informe um telefone com DDD");
+            telefone.focus();
+            return false;
+        }
+
+        console.log("teste");
+        $.get("http://localhost:8080/cadastro", {nome: nome.value, email: usuario.value,  senha: senha1.value, documento: cpf.value, telefone: telefone.value })
+        .done(function( data ) {
+            console.log(data);
+            if (data.success == true) {
+                setTimeout(function(){
+                    window.location.replace("./login.html");
+		        }, 2000);
+
+            alert("Cadastro efetuado com sucesso !!!");              
+                
+            } else  
+                alert("Tente novamente");
+        
+        });
+    }
+</script>
+
