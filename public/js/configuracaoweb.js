@@ -1,1 +1,1 @@
-var hosttelasweb = "https://larissa-services.herokuapp.com/"; 
+var hosttelasweb = "https://larissa-services.herokuapp.com"; 
