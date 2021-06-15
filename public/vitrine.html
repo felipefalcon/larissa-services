@@ -13,6 +13,7 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+        <script src="./js/configuracaoweb.js"></script>
     </head>
 
     <body>
@@ -109,7 +110,7 @@
         $("#botaosair").hide(); 
     }
 
-    $.get("http://localhost:8080/vitrine")
+    $.get(hosttelasweb+"/vitrine")
         .done(function( data ) {
 
             $("#produtosvitrine").empty();
@@ -136,7 +137,7 @@
         });
 
     function clickprodutos(genero) {
-        $.get("http://localhost:8080/generoperfume", {categoria: genero})
+        $.get(hosttelasweb+"/generoperfume", {categoria: genero})
         .done(function( data ) {
 
             $("#produtosvitrine").empty();
@@ -165,7 +166,7 @@
     
     function doSearch() { 
         console.log($("#mySearch").val())
-        $.get("http://localhost:8080/buscaresultado", {busca: $("#mySearch").val()})
+        $.get(hosttelasweb+"/buscaresultado", {busca: $("#mySearch").val()})
         .done(function( data ) {
 
             $("#produtosvitrine").empty();
@@ -198,7 +199,7 @@
     }
 
     function adicionacarrinho(codigo) {
-        $.get("http://localhost:8080/inserecarrinho", {sessionid: loginvar.codigo, codproduto: codigo, quantidade: 1.0})
+        $.get(hosttelasweb+"/inserecarrinho", {sessionid: loginvar.codigo, codproduto: codigo, quantidade: 1.0})
         .done(function( data ) {
             alert(data.result);
 
