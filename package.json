@@ -2,6 +2,7 @@
   "name": "larissa-services",
   "version": "1.0.0",
   "description": "Serviços para serem usados no projeto de WEB da Larissa",
+  "main": "index.js",
   "scripts": {
     "start": "node app.js"
   },
